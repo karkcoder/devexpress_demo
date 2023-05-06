@@ -4,7 +4,7 @@ using Shared.Results;
 
 namespace Logic.Products.Queries
 {
-    public class GetAllProductsQuery : IRequest<IDataResult<List<ProductResponse>>>
-    {
-    }
+	public class GetAllProductOrdersQuery : IRequest<IDataResult<List<ProductResponse>>>
+	{
+	}
 }

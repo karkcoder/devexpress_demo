@@ -8,20 +8,20 @@ using Shared.Results;
 
 namespace Logic.Products.Handlers
 {
-    public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, IDataResult<List<ProductResponse>>>
-    {
-        private readonly ApplicationDbContext _dbContext;
+	public class GetAllProductOrdersHandler : IRequestHandler<GetAllProductOrdersQuery, IDataResult<List<ProductResponse>>>
+	{
+		private readonly ApplicationDbContext _dbContext;
 
-        public GetAllProductsHandler(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+		public GetAllProductOrdersHandler(ApplicationDbContext dbContext)
+		{
+			_dbContext = dbContext;
+		}
 
-        public async Task<IDataResult<List<ProductResponse>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
-        {
-            var entities = await _dbContext.Products.ToListAsync(cancellationToken: cancellationToken);
-            var responses = entities.Select(x => x.ToResponse()).ToList();
-            return new SuccessResult<List<ProductResponse>>(responses);
-        }
-    }
+		public async Task<IDataResult<List<ProductResponse>>> Handle(GetAllProductOrdersQuery request, CancellationToken cancellationToken)
+		{
+			var entities = await _dbContext.ProductOrders.ToListAsync(cancellationToken: cancellationToken);
+			var responses = entities.Select(x => x.ToResponse()).ToList();
+			return new SuccessResult<List<ProductResponse>>(responses);
+		}
+	}
 }
