@@ -1,4 +1,5 @@
-﻿using Logic.Products.Queries;
+﻿using DevExtreme.AspNet.Data;
+using Logic.Products.Queries;
 using Logic.Products.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,16 +13,11 @@ namespace WebApi.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductResponse>))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
 		[HttpGet]
-		public async Task<IActionResult> Get()
+		public async Task<IActionResult> Get(DataSourceLoadOptions loadOptions)
 		{
 			var x = new GetAllProductOrdersQuery();
 			var result = await Mediator.Send(x);
-			if (result.Success)
-			{
-				return Ok(result.Data);
-			}
-
-			return BadRequest(result.Message);
+			return Ok(DataSourceLoader.Load(result, loadOptions));
 		}
 	}
 }
