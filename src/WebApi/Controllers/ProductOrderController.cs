@@ -12,18 +12,17 @@ namespace WebApi.Controllers
 		[Produces("application/json")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoadResult))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
-		[HttpGet]
-		public async Task<IActionResult> Get()
+		[HttpGet("GetOrdersForDevExpress")]
+		public async Task<IActionResult> GetOrdersForDevExpress([FromQuery] DataSourceLoadOptions loadOptions)
 		{
-			var loadOptions = new DataSourceLoadOptions();
-			loadOptions.Skip = 10;
-			loadOptions.Take = 20;
+			var result = await Mediator.Send(new GetAllProductOrdersQuery());
+			var gridResult = DataSourceLoader.Load(result.Data, loadOptions);
+			if (result.Success)
+			{
+				return Ok(gridResult);
+			}
 
-			loadOptions.RequireTotalCount = true;
-			var query = new GetAllProductOrdersQuery();
-			var orders = await Mediator.Send(query);
-			var result = DataSourceLoader.Load(orders.Data, loadOptions);
-			return Ok(result);
+			return BadRequest(result.Message);
 		}
 	}
 }
