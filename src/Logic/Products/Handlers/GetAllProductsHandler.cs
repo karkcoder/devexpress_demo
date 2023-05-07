@@ -1,13 +1,12 @@
-﻿using Infrastructure.Persistence;
-using Logic.Products.Mapper;
+﻿using Domain.Entities;
+using Infrastructure.Persistence;
 using Logic.Products.Queries;
-using Logic.Products.Responses;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Shared.Results;
 
 namespace Logic.Products.Handlers
 {
-	public class GetAllProductOrdersHandler : IRequestHandler<GetAllProductOrdersQuery, IQueryable<ProductResponse>>
+	public sealed class GetAllProductOrdersHandler : IRequestHandler<GetAllProductOrdersQuery, IDataResult<IQueryable<ProductOrder>>>
 	{
 		private readonly ApplicationDbContext _dbContext;
 
@@ -16,11 +15,10 @@ namespace Logic.Products.Handlers
 			_dbContext = dbContext;
 		}
 
-		public async Task<IQueryable<ProductResponse>> Handle(GetAllProductOrdersQuery request, CancellationToken cancellationToken)
+		public async Task<IDataResult<IQueryable<ProductOrder>>> Handle(GetAllProductOrdersQuery request, CancellationToken cancellationToken)
 		{
-			var entities = await _dbContext.ProductOrders.ToListAsync(cancellationToken: cancellationToken);
-			var responses = entities.Select(x => x.ToResponse()).AsQueryable();
-			return responses;
+			var entities = _dbContext.ProductOrders.AsQueryable();
+			return new SuccessResult<IQueryable<ProductOrder>>(entities);
 		}
 	}
 }
