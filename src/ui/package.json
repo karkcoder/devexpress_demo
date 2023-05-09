@@ -6,7 +6,8 @@
     "start": "nx serve",
     "build": "nx build",
     "watch": "nx build --watch --configuration development",
-    "test": "nx test"
+    "test": "nx test",
+    "generate:api": "openapi-generator-cli generate -i ./openapi.yaml -g typescript-angular -o src/app/core/api/v1"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +34,7 @@
     "@angular/compiler-cli": "^15.2.0",
     "@nx/angular": "16.1.3",
     "@nx/workspace": "16.1.3",
+    "@openapitools/openapi-generator-cli": "^2.6.0",
     "@schematics/angular": "~15.2.0",
     "@types/jasmine": "~4.3.0",
     "devextreme-cli": "latest",
